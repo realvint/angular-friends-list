@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'usersList';
-  typesOfNames: string[] = ['name 1', 'name 2', 'name 3', 'name 4'];
+
 }
