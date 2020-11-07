@@ -1,13 +1,124 @@
-<mat-selection-list #item>
-  <mat-list-option
-    *ngFor="let item of usersList; let i=index "
-    [ngClass]="{'gray' : i%2}"
-  >
+<!--<nav class="navbar navbar-expand-lg navbar-light " style="background-color:  #e3f2fd;">-->
+<!--  <a class="navbar-brand" href="#">Ремотроника</a>-->
+<!--  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+<!--          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--    <span class="navbar-toggler-icon"></span>-->
+<!--  </button>-->
+
+<!--  <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--    <ul class="navbar-nav mr-auto">-->
+<!--      <li class="nav-item active">-->
+<!--        <a class="nav-link" href="#">Лента <span class="sr-only">(current)</span></a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#">Заказы</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#">Товары</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#">Магазин</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#">Обсуждения</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#">Задачи</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item dropdown">-->
+<!--        <a-->
+<!--          class="nav-link dropdown-toggle"-->
+<!--          href="#" id="navbarDropdown"-->
+<!--          role="button" data-toggle="dropdown"-->
+<!--          aria-haspopup="true"-->
+<!--          aria-expanded="false"-->
+<!--        >-->
+<!--          Справочники-->
+<!--        </a>-->
+<!--        <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--          <a class="dropdown-item" href="#">Настройки</a>-->
+<!--          <a class="dropdown-item" href="#">Отчёты</a>-->
+<!--          <a class="dropdown-item" href="#">Категории</a>-->
+<!--          <a class="dropdown-item" href="#">Подкатегории</a>-->
+<!--          <div class="dropdown-divider"></div>-->
+<!--          <a class="dropdown-item" href="#">Склад</a>-->
+<!--        </div>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#" tabindex="-1">Кассы</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--    <form class="form-inline my-2 my-lg-0">-->
+<!--      <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search">-->
+
+<!--      &lt;!&ndash;      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>&ndash;&gt;-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</nav>-->
+
+
+<div class="line">
+  <mat-form-field appearance="outline">
+    <mat-label>Сортировка</mat-label>
+    <mat-select #list (selectionChange)="sort(list.value)">
+      <mat-option value="0">A - Z</mat-option>
+      <mat-option value="1">Z - A</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Поиск</mat-label>
+    <input matInput placeholder="Найти" #params (keyup.enter)="search(params.value)">
+    <mat-icon matSuffix (click)="search(params.value)">search</mat-icon>
+  </mat-form-field>
+</div>
+<div class="line">
+  <mat-form-field appearance="outline"class="line2">
+    <mat-label>Username</mat-label>
+    <input matInput placeholder="Username" [(ngModel)]="username">
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="line2">
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="Name"[(ngModel)]="name" >
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="line2">
+    <mat-label>User role</mat-label>
+    <mat-select [(ngModel)]="role">
+      <mat-option value="Admin">Admin</mat-option>
+      <mat-option value="User">User</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="addUsers()" class="button">Создать</button>
+</div>
+
+<div *ngIf="usersList.length>0; else empty">
+
+  <mat-selection-list #item (selectionChange)="selectItem(item.selectedOptions.selected)">
+    <mat-list-option
+      [value]="item"
+      *ngFor="let item of usersList; let i=index "
+      [ngClass]="{'gray' : i%2}"
+    >
+      <div>
+        <span class="item2">{{item.username}}</span>
+        <span class="item2">{{item.name}}</span>
+        <span class="item2" *ngIf="item.role === 'Admin'">{{item.role}}</span>
+      </div>
+    </mat-list-option>
+  </mat-selection-list>
+  <div class="line">
     <div>
-      <span class="item2">{{item.username}}</span>
-      <span class="item2">{{item.name}}</span>
-      <span class="item2" *ngIf="item.role === 'Admin'">{{item.role}}</span>
+      <p>Выбрано пользователей : {{item.selectedOptions.selected.length}}</p>
     </div>
-  </mat-list-option>
-</mat-selection-list>
-<p>Options selected: {{item.selectedOptions.selected.length}}</p>
+    <div>
+      <button mat-raised-button color="warn" (click)="delUsers()" class="button2">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #empty><div class="line">ничо нет</div></ng-template>
+
+
+
+
+
+
